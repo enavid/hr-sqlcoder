@@ -1,84 +1,78 @@
+
 # HR SQLcoder
 
-A Streamlit app that converts natural-language HR questions into PostgreSQL queries
-using a locally hosted Ollama model.
+[![CI](https://github.com/enavid/hr-sqlcoder/actions/workflows/ci.yml/badge.svg)](https://github.com/enavid/hr-sqlcoder/actions/workflows/ci.yml)
+[![Python](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/)
+[![Streamlit](https://img.shields.io/badge/streamlit-1.35+-ff4b4b.svg)](https://streamlit.io/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](https://claude.ai/chat/LICENSE)
 
-## Project structure
+A Streamlit app that turns natural-language HR questions into PostgreSQL queries using a locally hosted Ollama model — with a built-in Prompt Studio for prompt engineering.
 
-```
-hr-sqlcoder/
-├── app.py                      Entry point
-├── .env                        Environment variables (copy from .env.example)
-├── requirements.txt
-├── schema_context.txt          Your HR schema description
-├── prompts.json                Auto-generated; stores named prompt templates
-│
-├── .streamlit/
-│   └── config.toml             Theme configuration
-│
-├── pages/
-│   ├── chat.py                 Chat interface
-│   └── prompt_studio.py        Prompt engineering interface
-│
-└── core/
-    ├── config.py               Typed settings loaded from .env
-    ├── llm.py                  Ollama API client
-    ├── prompt.py               Prompt builder + default template
-    ├── database.py             PostgreSQL query runner
-    └── storage.py              Prompt template persistence (prompts.json)
-```
+---
+
+## Stack
+
+* **LLM** — Ollama (`llama3-sqlcoder`) running on a local GPU server
+* **UI** — Streamlit multi-page app
+* **DB** — PostgreSQL (`hr_mvp` schema)
+* **Container** — Docker + GitHub Container Registry
+
+---
 
 ## Setup
 
-### 1. Install dependencies
+### 1. Clone
+
+```bash
+git clone git@github.com:enavid/hr-sqlcoder.git
+cd hr-sqlcoder
+```
+
+### 2. Configure
+
+```bash
+cp .env.example .env
+# fill in your values
+```
+
+### 3. Add schema
+
+Paste your HR schema into `schema_context.txt`.
+
+### 4. Run locally
 
 ```bash
 pip install -r requirements.txt
-```
-
-### 2. Configure environment
-
-Copy `.env` and fill in your values:
-
-```bash
-cp .env .env.local   # optional — or edit .env directly
-```
-
-Key variables:
-
-| Variable           | Description                                  |
-|--------------------|----------------------------------------------|
-| `OLLAMA_URL`       | Full URL to the Ollama generate endpoint     |
-| `OLLAMA_TAGS_URL`  | URL to the Ollama tags endpoint (health)     |
-| `MODEL_NAME`       | Model name as registered in Ollama           |
-| `SCHEMA_PATH`      | Path to your `schema_context.txt`            |
-| `DB_HOST`          | PostgreSQL host                              |
-| `DB_PORT`          | PostgreSQL port (default 5432)               |
-| `DB_NAME`          | Database name                                |
-| `DB_USER`          | Database user                                |
-| `DB_PASSWORD`      | Database password                            |
-| `MODEL_TEMPERATURE`| Sampling temperature (default 0.4)           |
-| `MODEL_TOP_P`      | Top-p sampling (default 0.5)                 |
-
-### 3. Add your schema
-
-Paste your HR schema description into `schema_context.txt`.
-
-### 4. Run
-
-```bash
 streamlit run app.py
 ```
 
+### 5. Run with Docker
+
+```bash
+docker pull ghcr.io/enavid/hr-sqlcoder:latest
+docker compose up -d
+```
+
+---
+
 ## Pages
 
-### Chat
-- Type a question in Persian or English.
-- The active prompt template is used automatically (shown in the sidebar).
-- After SQL is generated, click **Run on DB** to execute it or **Dismiss** to skip.
+| Page                    | Description                                             |
+| ----------------------- | ------------------------------------------------------- |
+| **Chat**          | Ask questions in Persian or English, get SQL, run on DB |
+| **Prompt Studio** | Create and manage named prompt templates                |
 
-### Prompt Studio
-- Create and name multiple prompt templates.
-- Edit the template text — unsaved changes are marked with `*`.
-- Click **Set active** to make a template the default for the Chat page.
-- Use the **Preview** expander to render the prompt with a sample question.
+---
+
+## Environment Variables
+
+| Variable                            | Description                            |
+| ----------------------------------- | -------------------------------------- |
+| `OLLAMA_URL`                      | Ollama generate endpoint               |
+| `OLLAMA_TAGS_URL`                 | Ollama tags endpoint (health check)    |
+| `MODEL_NAME`                      | Model name in Ollama                   |
+| `SCHEMA_PATH`                     | Path to `schema_context.txt`         |
+| `DB_HOST`/`DB_PORT`/`DB_NAME` | PostgreSQL connection                  |
+| `DB_USER`/`DB_PASSWORD`         | PostgreSQL credentials                 |
+| `MODEL_TEMPERATURE`               | Sampling temperature (default `0.4`) |
+| `MODEL_TOP_P`                     | Top-p sampling (default `0.5`)       |
