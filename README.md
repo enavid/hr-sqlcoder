@@ -39,25 +39,25 @@ See **[Deploy on Ubuntu 24](#deploy-on-ubuntu-24)** section below.
 
 ## Pages
 
-| Page | Description |
-|------|-------------|
-| **Chat** | Ask questions in Persian or English, get SQL, run on DB |
-| **Prompt Studio** | Create and manage named prompt templates |
+| Page                    | Description                                             |
+| ----------------------- | ------------------------------------------------------- |
+| **Chat**          | Ask questions in Persian or English, get SQL, run on DB |
+| **Prompt Studio** | Create and manage named prompt templates                |
 
 ---
 
 ## Environment Variables
 
-| Variable | Description |
-|----------|-------------|
-| `OLLAMA_URL` | Ollama generate endpoint |
-| `OLLAMA_TAGS_URL` | Ollama tags endpoint (health check) |
-| `MODEL_NAME` | Model name in Ollama |
-| `SCHEMA_PATH` | Path to `schema_context.txt` |
-| `DB_HOST` / `DB_PORT` / `DB_NAME` | PostgreSQL connection |
-| `DB_USER` / `DB_PASSWORD` | PostgreSQL credentials |
-| `MODEL_TEMPERATURE` | Sampling temperature (default `0.4`) |
-| `MODEL_TOP_P` | Top-p sampling (default `0.5`) |
+| Variable                                | Description                            |
+| --------------------------------------- | -------------------------------------- |
+| `OLLAMA_URL`                          | Ollama generate endpoint               |
+| `OLLAMA_TAGS_URL`                     | Ollama tags endpoint (health check)    |
+| `MODEL_NAME`                          | Model name in Ollama                   |
+| `SCHEMA_PATH`                         | Path to `schema_context.txt`         |
+| `DB_HOST` / `DB_PORT` / `DB_NAME` | PostgreSQL connection                  |
+| `DB_USER` / `DB_PASSWORD`           | PostgreSQL credentials                 |
+| `MODEL_TEMPERATURE`                   | Sampling temperature (default `0.4`) |
+| `MODEL_TOP_P`                         | Top-p sampling (default `0.5`)       |
 
 ---
 
@@ -73,7 +73,7 @@ sudo usermod -aG docker $USER && newgrp docker
 ### 2. Clone the repo on the server
 
 ```bash
-git clone git@github.com:enavid/hr-sqlcoder.git
+git clone https://github.com/enavid/hr-sqlcoder.git
 cd hr-sqlcoder
 ```
 
